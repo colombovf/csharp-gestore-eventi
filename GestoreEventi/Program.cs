@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using GestoreEventi;
-
+/*
 Console.Write("Data:");
 string data = Console.ReadLine();
 Console.Write("Titolo:");
@@ -13,6 +13,8 @@ int maxP = int.Parse(Console.ReadLine());
 Evento e = new Evento(data , title , maxP);
 
 Console.WriteLine(e);
+
+*/
 /*
 
 Console.WriteLine("Posti da riservare ?");
@@ -24,7 +26,7 @@ e.CancelReservation(int.Parse(Console.ReadLine()));
 Console.WriteLine(e);
 */
 
-
+/*
 Console.WriteLine("Vuoi Prenotarere dei posti a sedere? (si/no)");
 string risposta = Console.ReadLine();
 while (risposta == "si")
@@ -55,5 +57,29 @@ while (risposta == "si")
     Console.WriteLine("Vuoi disdire altri posti prenotati?? (si/no)");
     risposta = Console.ReadLine();
 }
+
+*/
+
+
+
+//MILESTONE 4
+Console.WriteLine("Inserire titolo del programma eventi: ");
+string title = Console.ReadLine();
+ProgrammaEventi pe = new ProgrammaEventi(title);
+
+Console.WriteLine("Inserire quanti eventi aggiungere: ");
+int n  = int.Parse(Console.ReadLine());
+
+for(int i = 0; i < n; i++)
+{
+    Console.Write("Data:");
+    string data = Console.ReadLine();
+    Console.Write("Titolo:");
+    string titolo = Console.ReadLine();
+    Console.Write("Posti massimi:");
+    int maxP = int.Parse(Console.ReadLine());
+    pe.NewEvent(data, titolo, maxP);
+}
+
 
 
