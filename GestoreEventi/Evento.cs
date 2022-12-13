@@ -20,12 +20,15 @@ namespace GestoreEventi
         //COSTRUTTORE
         public Evento() { }
 
-        public Evento(string title, string date, int maxCapacity, int reservedSeats)
+        public Evento(string date, string title, int maxCapacity)
         {
-            this.title = title;
+            CheckDate(date);
             this.date = date;
+            CheckTitle(title);
+            this.title = title;
+            CheckMaxCapacity(maxCapacity);
             this.maxCapacity = maxCapacity;
-            this.reservedSeats = reservedSeats;
+            this.reservedSeats = 0;
         }
 
         //GETTER
@@ -47,49 +50,81 @@ namespace GestoreEventi
         }
  
         //SETTER
-        public string setTitle()
+        public void setTitle(string title)
         {
-            if(title == "")
+           CheckTitle(title);
+            this.title = title;
+        }
+        public void setDate(string date)
+        {
+            CheckDate(date);
+            this.date = date;
+        }
+
+        public void setMaxCapacity(int newMaxCapacity)
+        {
+            CheckMaxCapacity(newMaxCapacity);
+            this.maxCapacity = newMaxCapacity;
+        }
+  
+
+        //METODI PRIVATI
+        private void CheckTitle(string title)
+        {
+            while (title.Length <= 0)
             {
                 Console.WriteLine("Inserire un titolo valido");
-            } return title;
+                title = Console.ReadLine();
+            }
         }
-        public string setDate()
+        private void CheckDate(string date)
         {
-            if (DateTime.Now > Convert.ToDateTime(date))
+           while (DateTime.Now > Convert.ToDateTime(date))
             {
-                Console.WriteLine("Inserire una data valida");
-            } return date;
+                Console.WriteLine("Inserire una data corretta: gg/mm/aaaa");
+                date = Console.ReadLine();
+            }
         }
 
-        private int setMaxCapacity()
+        private void CheckMaxCapacity(int NewMaxCapacity)
         {
-            if (maxCapacity >= 0)
+            while (NewMaxCapacity <= 0)
             {
-                Console.WriteLine("La capacità massima dei posti deve essere maggiore di zero");
-            } return maxCapacity;
+                Console.WriteLine("Inserire una capacità di posti positiva");
+                NewMaxCapacity = int.Parse(Console.ReadLine());
+            }
         }
 
-        //METODI
+        //METODI PUBBLICI
+
         public int ReserveSeats(int seats)
         {
             int maxCapacityReserved = maxCapacity - reservedSeats;
             if (seats > maxCapacityReserved)
             {
                 Console.WriteLine("Superata la massima capienza di posti, inserire un numero valido di posti da riservare");
+                //ECCEZIONE
             }
             else if (seats < 0)
             {
                 Console.WriteLine("Inserire un numero di posti maggiore di zero");
+                //ECCEZIONE
             }return reservedSeats += seats;
+            //Aggiungere un'ECCEZIONE se l'evento è già passato
         }
         public int CancelReservation(int seats)
         {
+            //Aggiungere un'ECCEZIONE se l'evento è già passato
+            if(seats > reservedSeats)
+            {
+                Console.WriteLine("Selezionare un numero corretto di posti riservati da disdire");
+                //ECCEZIONE
+            }
             return reservedSeats -= seats;
         }
         public override string ToString()
         {
-            string obj =
+            string obj = $"{date} - {title}"; 
             return obj;
         }
     }
