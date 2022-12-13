@@ -97,30 +97,50 @@ namespace GestoreEventi
 
         //METODI PUBBLICI
 
-        public int ReserveSeats(int seats)
+        public void ReserveSeats(int seats)
         {
-            int maxCapacityReserved = maxCapacity - reservedSeats;
-            if (seats > maxCapacityReserved)
+            if(DateTime.Now > Convert.ToDateTime(date))
             {
-                Console.WriteLine("Superata la massima capienza di posti, inserire un numero valido di posti da riservare");
-                //ECCEZIONE
+                throw new ExpiredDate("La data è passata");
+                return;
             }
-            else if (seats < 0)
+            if (seats <= 0)
             {
-                Console.WriteLine("Inserire un numero di posti maggiore di zero");
-                //ECCEZIONE
-            }return reservedSeats += seats;
-            //Aggiungere un'ECCEZIONE se l'evento è già passato
+                throw new NegativeSeatsNumber(
+                "Il numero inserito è minore di 1");
+                return;
+            }
+
+            if ((maxCapacity - reservedSeats) < seats)
+            {
+                throw new NotAvailableSeats(
+                "Il numero inserito è maggiore di posti disponibili");
+                return;
+            }
+
+            reservedSeats += seats;
         }
-        public int CancelReservation(int seats)
+        public void CancelReservation(int seats)
         {
-            //Aggiungere un'ECCEZIONE se l'evento è già passato
+
+            if (DateTime.Now > Convert.ToDateTime(date))
+            {
+                throw new ExpiredDate("La data è passata");
+                return;
+            }
+            if (seats <= 0)
+            {
+                throw new NegativeSeatsNumber(
+                "Il numero inserito è minore di 1");
+                return;
+            }
             if(seats > reservedSeats)
             {
-                Console.WriteLine("Selezionare un numero corretto di posti riservati da disdire");
-                //ECCEZIONE
+                throw new UnavailableCancelReservation("I posti da cancellare sono maggiori dei posti riservati");
+                return;
             }
-            return reservedSeats -= seats;
+
+            reservedSeats -= seats;
         }
         public override string ToString()
         {
