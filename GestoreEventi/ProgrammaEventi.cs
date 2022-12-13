@@ -28,7 +28,7 @@ namespace GestoreEventi
             eventi.Add(new Evento(data, title, maxCapacity));
         }
 
-        public List<Evento> EventperDate(string date)
+        public List<Evento> EventPerDate(string date)
         {
             List<Evento> cercaEventi = new List<Evento>();
             foreach(Evento evento in eventi)

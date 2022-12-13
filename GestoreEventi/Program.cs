@@ -73,13 +73,33 @@ int n  = int.Parse(Console.ReadLine());
 for(int i = 0; i < n; i++)
 {
     Console.Write("Data:");
-    string data = Console.ReadLine();
+    string date = Console.ReadLine();
     Console.Write("Titolo:");
     string titolo = Console.ReadLine();
     Console.Write("Posti massimi:");
     int maxP = int.Parse(Console.ReadLine());
-    pe.NewEvent(data, titolo, maxP);
+    pe.NewEvent(date, titolo, maxP);
 }
+
+//1
+Console.WriteLine(pe.CountEvent());
+//2
+Console.WriteLine(pe.ToString());
+//3
+Console.WriteLine("Inserisci data da cercare: ");
+string data = Console.ReadLine();
+List<Evento> listPerData = pe.EventPerDate(data);
+string stringListPerData = ProgrammaEventi.ListEventToString(listPerData);
+Console.WriteLine(stringListPerData);
+//4
+pe.ClearList();
+
+Console.WriteLine(pe.ToString());
+
+
+
+
+
 
 
 
