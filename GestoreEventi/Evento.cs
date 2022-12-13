@@ -23,11 +23,8 @@ namespace GestoreEventi
         public Evento(string date, string title, int maxCapacity)
         {
             CheckDate(date);
-            this.date = date;
             CheckTitle(title);
-            this.title = title;
             CheckMaxCapacity(maxCapacity);
-            this.maxCapacity = maxCapacity;
             this.reservedSeats = 0;
         }
 
@@ -53,69 +50,93 @@ namespace GestoreEventi
         public void setTitle(string title)
         {
            CheckTitle(title);
-            this.title = title;
+        
         }
         public void setDate(string date)
         {
             CheckDate(date);
-            this.date = date;
         }
 
         public void setMaxCapacity(int newMaxCapacity)
         {
             CheckMaxCapacity(newMaxCapacity);
-            this.maxCapacity = newMaxCapacity;
         }
   
 
         //METODI PRIVATI
         private void CheckTitle(string title)
         {
+            if (title.Length <= 0)
+            {
+                throw new Exception("Titolo vuoto");
+            }
+            this.title = title;
+
+            /*  Soluzione alternativa senza Exception
             while (title.Length <= 0)
             {
                 Console.WriteLine("Inserire un titolo valido");
                 title = Console.ReadLine();
             }
+            this.title = title;
+            */
         }
         private void CheckDate(string date)
         {
-           while (DateTime.Now > Convert.ToDateTime(date))
+            if (DateTime.Now > DateTime.Parse(date))
             {
+                throw new ExpiredDate("Data passata");
+            }
+
+            this.date = date ;
+
+            /*  Soluzione alternativa senza Exception
+            while (DateTime.Now > Convert.ToDateTime(date))
+            {                
+                throw new ExpiredDate("La data è passata");
                 Console.WriteLine("Inserire una data corretta: gg/mm/aaaa");
                 date = Console.ReadLine();
-            }
+            }*/
         }
 
         private void CheckMaxCapacity(int NewMaxCapacity)
         {
+            if (NewMaxCapacity <= 0)
+            {
+                throw new Exception("Numero minore di 1");
+            }
+            this.maxCapacity = NewMaxCapacity;
+
+
+            /*  Soluzione alternativa senza Exception
+
             while (NewMaxCapacity <= 0)
             {
                 Console.WriteLine("Inserire una capacità di posti positiva");
                 NewMaxCapacity = int.Parse(Console.ReadLine());
             }
+            this.maxCapacity = NewMaxCapacity;
+            */
         }
 
         //METODI PUBBLICI
 
         public void ReserveSeats(int seats)
         {
-            if(DateTime.Now > Convert.ToDateTime(date))
+            if (DateTime.Now > DateTime.Parse(date))
             {
-                throw new ExpiredDate("La data è passata");
-                return;
+                throw new   ExpiredDate("La data è passata");
             }
             if (seats <= 0)
             {
                 throw new NegativeSeatsNumber(
                 "Il numero inserito è minore di 1");
-                return;
             }
 
             if ((maxCapacity - reservedSeats) < seats)
             {
-                throw new NotAvailableSeats(
+                throw new Exception(
                 "Il numero inserito è maggiore di posti disponibili");
-                return;
             }
 
             reservedSeats += seats;
@@ -123,28 +144,25 @@ namespace GestoreEventi
         public void CancelReservation(int seats)
         {
 
-            if (DateTime.Now > Convert.ToDateTime(date))
+            if (DateTime.Now > DateTime.Parse(date))
             {
                 throw new ExpiredDate("La data è passata");
-                return;
             }
             if (seats <= 0)
             {
                 throw new NegativeSeatsNumber(
                 "Il numero inserito è minore di 1");
-                return;
             }
             if(seats > reservedSeats)
             {
                 throw new UnavailableCancelReservation("I posti da cancellare sono maggiori dei posti riservati");
-                return;
             }
 
             reservedSeats -= seats;
         }
         public override string ToString()
         {
-            string obj = $"{date} - {title}"; 
+            string obj = $"{date} - {title} - {maxCapacity} - {reservedSeats}"; 
             return obj;
         }
     }
