@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,14 +13,14 @@ namespace GestoreEventi
         //ATTRIBUTI
         private string title;
         private string date;
-        private string maxCapacity;
-        private string reservedSeats;
+        private int maxCapacity;
+        private int reservedSeats;
 
         //STATO
         //COSTRUTTORE
         public Evento() { }
 
-        public Evento(string title, string date, string maxCapacity, string reservedSeats)
+        public Evento(string title, string date, int maxCapacity, int reservedSeats)
         {
             this.title = title;
             this.date = date;
@@ -36,11 +37,11 @@ namespace GestoreEventi
         {
             return date;
         }
-        public string getMaxCapacity()
+        public int getMaxCapacity()
         {
             return maxCapacity;
         }
-        public string getReservedSeats()
+        public int getReservedSeats()
         {
             return reservedSeats;
         }
@@ -60,14 +61,31 @@ namespace GestoreEventi
                 Console.WriteLine("Inserire una data valida");
             } return date;
         }
-        //METODI
-        public string ReserveSeats()
+
+        private int setMaxCapacity()
         {
-            return;
+            if (maxCapacity >= 0)
+            {
+                Console.WriteLine("La capacità massima dei posti deve essere maggiore di zero");
+            } return maxCapacity;
         }
-        public string CancelReservation()
+
+        //METODI
+        public int ReserveSeats(int seats)
         {
-            return;
+            int maxCapacityReserved = maxCapacity - reservedSeats;
+            if (seats > maxCapacityReserved)
+            {
+                Console.WriteLine("Superata la massima capienza di posti, inserire un numero valido di posti da riservare");
+            }
+            else if (seats < 0)
+            {
+                Console.WriteLine("Inserire un numero di posti maggiore di zero");
+            }return reservedSeats += seats;
+        }
+        public int CancelReservation(int seats)
+        {
+            return reservedSeats -= seats;
         }
         public override string ToString()
         {
